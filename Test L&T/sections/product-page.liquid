@@ -1,0 +1,187 @@
+<!-- product-details -->
+
+<div class="container">
+  <div class="fixed-side">
+    {% assign current_variant = product.selected_or_first_available_variant %}
+    {% assign featured_image = current_variant.featured_image | default: product.featured_image %}
+
+    <div class="prdImg">
+      <img
+        src="{{ featured_image | img_url: 'large' }}"
+        alt="{{ featured_image.alt | escape }}"
+        id="ProductPhotoImg">
+    </div>
+    {% for image in product.images %}
+      <a href="{{ image.src | img_url: 'large' }}">
+        <img src="{{ image.src | img_url: 'compact' }}" alt="{{ image.alt | escape }}">
+      </a>
+    {% endfor %}
+  </div>
+
+  <div class="scrollable-side">
+
+    {% if section.blocks contains 'product-details' %}
+      <div class="product-details">
+        <!-- Add logic to display product details using dynamic data sources -->
+        <h1>{{ product.title }}</h1>
+        <p class="price">{{ product.price | money }}</p>
+        <p>{{ product.description }}</p>
+      </div>
+    {% endif %}
+    <div class="product-details">
+      <!-- Display product details here using dynamic data sources -->
+      <h1>{{ product.title }}</h1>
+    </div>
+
+    <div class="add-to-cart">
+      <form
+        action="/cart/add"
+        method="post"
+        enctype="multipart/form-data"
+        id="AddToCartForm">
+
+        {% if product.variants.size > 1 %}
+          <!-- Do something because the product has variants -->
+          <p>This product has multiple variants.</p>
+
+          <div class="varaints">
+         
+          <select name="id" id="productSelect">
+            {% for variant in product.variants %}
+              
+              {% unless variant.title contains 'Default Title'%}
+                {% if variant.available %}
+                  <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+                {% else %}
+                  <option disabled="disabled">{{ variant.title }} - sold out</option>
+                {% endif %}
+              {% endunless %}
+
+              
+            {% endfor %}
+          </select>
+        </div>
+        {% else %}
+          <!-- Hide or do something else because the product doesn't have variants -->
+          <p>This product doesn't have variants.</p>
+
+          
+        <div class="price">
+          {{ current_variant.price | money }}
+        </div>
+        {% endif %}
+        
+       
+
+
+        <div class="qty">
+          <label for="Quantity">quantity</label>
+          <input
+            type="number"
+            id="Quantity"
+            name="quantity"
+            value="1"
+            min="1">
+        </div>
+
+        <div class="add_cart">
+          <button class="btn btn-primary"
+            type="submit"
+            name="add"
+            id="AddToCart">Add to cart</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="pro-dec">
+      {{ product.description }}
+    </div>
+
+    <div>
+      {% for block in section.blocks %}
+        <div>
+          {{ block.settings.text }}
+        </div>
+      {% endfor %}
+  </div>
+
+
+    <!-- Accessing a product metafield -->
+    {% assign customField = product.metafields.test_data.snowboard_length %}
+    {% if customField %}
+      <div class="custom-field">
+        Length: {{ customField.value }}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<!-- custom-content -->
+<div class="custom-content">
+  <!-- Display custom content added by admins using metafields -->
+  {% section 'custom-content' %}
+</div>
+
+{% schema %}
+  {
+    "name": "Product Page",
+    "blocks": [
+      {
+        "type": "product-details",
+        "name": "Product Details",
+        "settings": [
+          {
+            "type": "inline_richtext",
+            "id": "text",
+            "default": "Text block",
+            "label": "Text block"
+          }
+        ]
+      }, {
+        "type": "product-variations",
+        "name": "Product Variations"
+      }, {
+        "type": "custom-content",
+        "name": "Custom Content",
+        "settings": [
+          {
+            "type": "inline_richtext",
+            "id": "text",
+            "default": "Text block",
+            "label": "Text block"
+          }
+        ]
+      }
+    ],
+    "settings": [
+      {
+        "type": "inline_richtext",
+        "id": "text",
+        "default": "Text block",
+        "label": "Add custom text here"
+      }, {
+        "type": "select",
+        "id": "text_style",
+        "options": [
+          {
+            "value": "body",
+            "label": "body"
+          }, {
+            "value": "subtitle",
+            "label": "subtitle"
+          }, {
+            "value": "uppercase",
+            "label": "uppercase"
+          }
+        ],
+        "default": "body",
+        "label": "body"
+      }
+    ]
+  }
+{% endschema %}
+
+<div class="product-page">
+  {{ content_for_layout }}
+</div>

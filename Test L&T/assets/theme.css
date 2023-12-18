@@ -1,0 +1,73 @@
+/* Product theme css */
+
+
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .fixed-side {
+    width: 50%; /* Adjust the width of the fixed side as needed */
+    background-color: #f0f0f0;
+    overflow: hidden;
+    /* border: 1px solid #000; */
+   
+  }
+
+  #AddToCartForm {
+    display: flex;
+    display: flexbox;
+    flex-direction: column;
+  }
+  
+  .scrollable-side {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    /* border: 1px solid #000; */
+  }
+  
+  /* Optional: Add styling to make it visually appealing */
+  .fixed-side h2 {
+    margin: 10px;
+  }
+  
+  .scrollable-side p {
+    line-height: 1.6;
+  }
+  
+  /* Optional: Add a border between the fixed and scrollable sides */
+  .container::after {
+    content: '';
+    width: 1px;
+    background-color: #ccc;
+    height: 100%;
+    margin-left: -1px;
+    position: absolute;
+    top: 0;
+  }
+  
+  .add-to-cart {
+    
+  }
+  #AddToCartForm, .container div{
+    margin: 0 0 15px 0
+  }
+  
+  .prdImg img{
+    width: 100%;
+  }
+
+  .cartItem {
+    display: flex;
+    flex-direction: column;
+  }
+
+  td, th{
+    padding: 0 15px;
+  }

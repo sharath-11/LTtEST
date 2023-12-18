@@ -1,0 +1,17 @@
+{% schema %}
+    {
+      "name": "Custom Content",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Custom Content",
+          "id": "custom_content"
+        }
+      ]
+    }
+    {% endschema %}
+    
+    <div class="custom-content">
+      {{ section.settings.custom_content | escape }}
+    </div>
+    
